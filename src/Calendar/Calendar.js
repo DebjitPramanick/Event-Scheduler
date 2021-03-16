@@ -30,7 +30,7 @@ const Calendar = () => {
         thisMonth.unshift(' ');
     }
 
-    // Methods --------------------
+    // Methods ----------------------
 
     const handleLeft = () => {
         if(month>0){

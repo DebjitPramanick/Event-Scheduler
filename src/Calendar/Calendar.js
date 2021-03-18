@@ -26,14 +26,14 @@ const Calendar = () => {
             const days = new Date(year, month, 0).getDate();
             return days;
         }
-        setNum(daysInMonth(4, year)) // Setting the number of days in a month
+        setNum(daysInMonth(month+1, year)) // Setting the number of days in a month
 
         setAllDates(dates.filter((x) => (x <= num))) // Generating all dates of particular month
 
         for (let i = 0; i < gaps; i++) {
             setAllDates(x => [' ', ...x]) // Generating start and end point of dates
         }
-    }, [num, gaps]);
+    }, [num, gaps, month]);
 
 
 
@@ -48,6 +48,7 @@ const Calendar = () => {
             setCurDay(newDay)
         }
     }
+
     const handleRight = () => {
         if (month < 11) {
             setMonth(month + 1);

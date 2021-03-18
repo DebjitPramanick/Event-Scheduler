@@ -4,6 +4,7 @@ import { days, months, dates } from "../Utils";
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import { IconButton } from "@material-ui/core";
+import RestoreIcon from '@material-ui/icons/Restore';
 
 const Calendar = () => {
 
@@ -15,6 +16,8 @@ const Calendar = () => {
 
     const [num, setNum] = useState(0);
     const [month, setMonth] = useState(curM)
+    const [allDates, setAllDates] = useState([]);
+    const [gaps, setGaps] = useState(f)
     
 
     useEffect(() => {
@@ -22,30 +25,43 @@ const Calendar = () => {
             const days = new Date(year, month, 0).getDate();
             return days;
         }
-        setNum(daysInMonth((curM + 1), year))
-    }, []);
+        setNum(daysInMonth(4, year)) // Setting the number of days in a month
+    
+        setAllDates(dates.filter((x) => (x <= num))) // Generating all dates of particular month
 
-    const thisMonth = dates.filter((x) => (x <= num))
-    for (let i = 0; i < f; i++) {
-        thisMonth.unshift(' ');
-    }
+        for (let i = 0; i < gaps; i++) {
+            setAllDates(x=>[' ',...x]) // Generating start and end point of dates
+        }
+    }, [num,gaps]);
+
 
     // Methods ----------------------
 
     const handleLeft = () => {
         if(month>0){
             setMonth(month-1);
+            const newGaps = new Date(year, month-1, 1).getDay();
+            setGaps(newGaps);
         }
     }
     const handleRight = () => {
         if(month<11){
             setMonth(month+1);
+            const newGaps = new Date(year, month+1, 1).getDay();
+            setGaps(newGaps);
         }
-        
+    }
+
+    const resetHandler = () =>{
+        setMonth(curM)
     }
 
     return (
         <div className="calendar-container">
+            <IconButton className="restore"
+            onClick={resetHandler}>
+                <RestoreIcon />
+            </IconButton>
             <div className="header">Date Picker</div>
 
             <div className="months">
@@ -80,7 +96,7 @@ const Calendar = () => {
 
                 <div className="dates">
 
-                    {thisMonth.map((d) => {
+                    {allDates.map((d) => {
                         if (today === d) {
                             return (
                                 <div>

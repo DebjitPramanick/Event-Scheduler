@@ -18,7 +18,8 @@ const Calendar = () => {
     const [month, setMonth] = useState(curM)
     const [allDates, setAllDates] = useState([]);
     const [gaps, setGaps] = useState(f)
-    
+    const [curDay, setCurDay] = useState(curD)
+
 
     useEffect(() => {
         function daysInMonth(month, year) {
@@ -26,40 +27,46 @@ const Calendar = () => {
             return days;
         }
         setNum(daysInMonth(4, year)) // Setting the number of days in a month
-    
+
         setAllDates(dates.filter((x) => (x <= num))) // Generating all dates of particular month
 
         for (let i = 0; i < gaps; i++) {
-            setAllDates(x=>[' ',...x]) // Generating start and end point of dates
+            setAllDates(x => [' ', ...x]) // Generating start and end point of dates
         }
-    }, [num,gaps]);
+    }, [num, gaps]);
+
 
 
     // Methods ----------------------
 
     const handleLeft = () => {
-        if(month>0){
-            setMonth(month-1);
-            const newGaps = new Date(year, month-1, 1).getDay();
+        if (month > 0) {
+            setMonth(month - 1);
+            const newGaps = new Date(year, month - 1, 1).getDay();
             setGaps(newGaps);
+            const newDay = new Date(year, month-1, today).getDay();
+            setCurDay(newDay)
         }
     }
     const handleRight = () => {
-        if(month<11){
-            setMonth(month+1);
-            const newGaps = new Date(year, month+1, 1).getDay();
+        if (month < 11) {
+            setMonth(month + 1);
+            const newGaps = new Date(year, month + 1, 1).getDay();
             setGaps(newGaps);
+            const newDay = new Date(year, month+1, today).getDay();
+            setCurDay(newDay)
         }
     }
 
-    const resetHandler = () =>{
+    const resetHandler = () => {
         setMonth(curM)
+        setGaps(f)
     }
 
     return (
         <div className="calendar-container">
             <IconButton className="restore"
-            onClick={resetHandler}>
+                onClick={resetHandler}>
                 <RestoreIcon />
             </IconButton>
             <div className="header">Date Picker</div>
@@ -86,7 +93,7 @@ const Calendar = () => {
             <div className="container">
                 <div className="days">
                     {days.map((d) => {
-                        if (days[curD] === d) {
+                        if (days[curDay] === d) {
                             return <p className="cur-day">{d.slice(0, 3)}</p>;
                         } else {
                             return <p>{d.slice(0, 3)}</p>;

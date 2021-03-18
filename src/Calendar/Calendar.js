@@ -75,6 +75,10 @@ const Calendar = () => {
                 onClick={resetHandler}>
                 <RestoreIcon />
             </IconButton>
+
+            <p className="show-year">{year}</p>
+
+
             <div className="header">Date Picker</div>
 
             <div className="months">
@@ -84,9 +88,7 @@ const Calendar = () => {
                     </IconButton>
                 </div>
 
-
                 <p>{months[month]}</p>
-
 
                 <div className="right">
                     <IconButton onClick={handleRight}>

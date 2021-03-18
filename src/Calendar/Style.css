@@ -13,6 +13,13 @@
   left: 0
 }
 
+.show-year{
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 18px;
+}
+
 .header {
   font-size: 18px;
   width: 100%;

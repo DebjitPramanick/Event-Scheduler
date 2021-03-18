@@ -61,6 +61,12 @@ const Calendar = () => {
     const resetHandler = () => {
         setMonth(curM)
         setGaps(f)
+        setCurDay(curD)
+    }
+
+    const handleDate = (d) =>{
+        const newDay = new Date(year, month, d).getDay();
+        console.log(d,months[month],year,days[newDay])
     }
 
     return (
@@ -107,14 +113,15 @@ const Calendar = () => {
                         if (today === d) {
                             return (
                                 <div>
-                                    <p className="cur-date">{d}</p>
+                                    <p className="cur-date"
+                                    onClick={() => handleDate(d)}>{d}</p>
                                 </div>
                             )
                         }
                         else {
                             return (
                                 <div>
-                                    <p>{d}</p>
+                                    <p onClick={() => handleDate(d)}>{d}</p>
                                 </div>
                             )
                         }

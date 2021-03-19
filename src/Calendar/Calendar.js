@@ -78,7 +78,6 @@ const Calendar = ({setSchedules}) => {
                 year: year,
                 day: days[sd]
             }
-            console.log(obj)
             setSelected(x=>[...x,obj])
             sethigHlighted(x=>[...x,d])
         }

@@ -14,26 +14,23 @@ const Calendar = () => {
     const year = new Date().getFullYear();
     const f = new Date(year, curM, 1).getDay();
 
-    const [num, setNum] = useState(0);
     const [month, setMonth] = useState(curM)
     const [allDates, setAllDates] = useState([]);
     const [gaps, setGaps] = useState(f)
     const [curDay, setCurDay] = useState(curD)
+    const [selected, setSelected] = useState([])
+    const [highlighted, sethigHlighted] = useState([])
 
 
     useEffect(() => {
-        function daysInMonth(month, year) {
-            const days = new Date(year, month, 0).getDate();
-            return days;
-        }
-        setNum(daysInMonth(month+1, year)) // Setting the number of days in a month
+        const numDays = new Date(year, month + 1, 0).getDate();
 
-        setAllDates(dates.filter((x) => (x <= num))) // Generating all dates of particular month
+        setAllDates(dates.filter((x) => (x <= numDays))) // Generating all dates of particular month
 
         for (let i = 0; i < gaps; i++) {
             setAllDates(x => [' ', ...x]) // Generating start and end point of dates
         }
-    }, [num, gaps, month]);
+    }, [gaps, month]);
 
 
 
@@ -44,7 +41,7 @@ const Calendar = () => {
             setMonth(month - 1);
             const newGaps = new Date(year, month - 1, 1).getDay();
             setGaps(newGaps);
-            const newDay = new Date(year, month-1, today).getDay();
+            const newDay = new Date(year, month - 1, today).getDay();
             setCurDay(newDay)
         }
     }
@@ -54,7 +51,7 @@ const Calendar = () => {
             setMonth(month + 1);
             const newGaps = new Date(year, month + 1, 1).getDay();
             setGaps(newGaps);
-            const newDay = new Date(year, month+1, today).getDay();
+            const newDay = new Date(year, month + 1, today).getDay();
             setCurDay(newDay)
         }
     }
@@ -65,10 +62,20 @@ const Calendar = () => {
         setCurDay(curD)
     }
 
-    const handleDate = (d) =>{
-        const newDay = new Date(year, month, d).getDay();
-        console.log(d,months[month],year,days[newDay])
+    const handleSelect = (d) => {
+        const sd = new Date(year, month, d).getDay();
+        console.log(d, months[month], year, days[sd]);
+        const obj = {
+            date: d,
+            month: months[month],
+            year: year,
+            day: days[sd]
+        }
+        setSelected(x=>[...x,obj])
+        sethigHlighted(x=>[...x,d])
     }
+
+    console.log(highlighted)
 
     return (
         <div className="calendar-container">
@@ -117,14 +124,22 @@ const Calendar = () => {
                             return (
                                 <div>
                                     <p className="cur-date"
-                                    onClick={() => handleDate(d)}>{d}</p>
+                                        onClick={() => handleSelect(d)}>{d}</p>
+                                </div>
+                            )
+                        }
+                        else if(highlighted.includes(d)){
+                            return (
+                                <div>
+                                    <p className="selected-date"
+                                        onClick={() => handleSelect(d)}>{d}</p>
                                 </div>
                             )
                         }
                         else {
                             return (
                                 <div>
-                                    <p onClick={() => handleDate(d)}>{d}</p>
+                                    <p onClick={() => handleSelect(d)}>{d}</p>
                                 </div>
                             )
                         }

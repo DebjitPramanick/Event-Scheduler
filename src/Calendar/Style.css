@@ -7,13 +7,13 @@
   position: relative;
 }
 
-.restore{
+.restore {
   position: absolute !important;
   top: 0;
-  left: 0
+  left: 0;
 }
 
-.show-year{
+.show-year {
   position: absolute;
   top: 0;
   right: 0;
@@ -70,14 +70,14 @@
   justify-content: center;
 }
 
-.dates div p{
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.5s;
+.dates div p {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.5s;
 }
 
 .dates p:hover {
@@ -86,7 +86,11 @@
   transform: scale(1.5);
 }
 
-.cur-date{
-    background-color: rgb(248, 38, 83);
-    color: white;
+.cur-date {
+  background-color: rgb(248, 38, 83);
+  color: white;
+}
+.selected-date {
+  background-color: rgba(255, 130, 157, 0.678);
+  color: black;
 }

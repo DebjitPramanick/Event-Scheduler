@@ -6,7 +6,7 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import { IconButton } from "@material-ui/core";
 import RestoreIcon from '@material-ui/icons/Restore';
 
-const Calendar = () => {
+const Calendar = ({setSchedules}) => {
 
     const curD = new Date().getUTCDay();
     const curM = new Date().getMonth();
@@ -37,12 +37,15 @@ const Calendar = () => {
     // Methods ----------------------
 
     const handleLeft = () => {
-        if (month > 0) {
+        if (month > curM) {
             setMonth(month - 1);
             const newGaps = new Date(year, month - 1, 1).getDay();
             setGaps(newGaps);
             const newDay = new Date(year, month - 1, today).getDay();
             setCurDay(newDay)
+        }
+        else{
+            alert("Not allowed.")
         }
     }
 
@@ -54,6 +57,9 @@ const Calendar = () => {
             const newDay = new Date(year, month + 1, today).getDay();
             setCurDay(newDay)
         }
+        else{
+            alert("Not allowed.")
+        }
     }
 
     const resetHandler = () => {
@@ -64,18 +70,26 @@ const Calendar = () => {
 
     const handleSelect = (d) => {
         const sd = new Date(year, month, d).getDay();
-        console.log(d, months[month], year, days[sd]);
-        const obj = {
-            date: d,
-            month: months[month],
-            year: year,
-            day: days[sd]
+        
+        if(!highlighted.includes(d)){
+            const obj = {
+                date: d,
+                month: months[month],
+                year: year,
+                day: days[sd]
+            }
+            console.log(obj)
+            setSelected(x=>[...x,obj])
+            sethigHlighted(x=>[...x,d])
         }
-        setSelected(x=>[...x,obj])
-        sethigHlighted(x=>[...x,d])
-    }
+        else{
+            const filter = selected.filter(x=>(x.date != d));
+            const second_filter = highlighted.filter(x=>x!=d);
+            setSelected(filter)
+            sethigHlighted(second_filter)
 
-    console.log(highlighted)
+        }
+    }
 
     return (
         <div className="calendar-container">
@@ -128,11 +142,18 @@ const Calendar = () => {
                                 </div>
                             )
                         }
-                        else if(highlighted.includes(d)){
+                        else if(highlighted.includes(d) && month === curM){
                             return (
                                 <div>
                                     <p className="selected-date"
                                         onClick={() => handleSelect(d)}>{d}</p>
+                                </div>
+                            )
+                        }
+                        else if(d<today && d!==" " && month === curM){
+                            return (
+                                <div>
+                                    <p className="invalid-date">{d}</p>
                                 </div>
                             )
                         }
@@ -146,6 +167,14 @@ const Calendar = () => {
                     })}
                 </div>
             </div>
+
+
+            {(selected.length !== 0) && (
+                <button className="select-btn"
+                onClick={()=>setSchedules(selected)}>
+                    Select
+                </button>
+            )}
 
 
         </div>
